@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Les petits plats</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<style>
+    header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+    .input-group{
+        width:90%;
+    }
+    .search-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    #searchInput {
+        width: 100%;
+        padding: 8px 40px 8px 12px; /* Ajuster le padding en fonction de vos préférences */
+        border: none;
+        font-size: 1rem;
+    }
+    
+    .search-icon {
+        position: absolute;
+        right: 10px; /* Ajuster la marge droite en fonction de vos préférences */
+        color: #aaa;
+        pointer-events: none;
+    }
+    
+    #searchInput:focus {
+        outline: none;
+        border-color: #3d8af7;
+    }
+    .tag-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        width: 90%;
+        border: red solid 1px;
+    }
+    /* all tag-suggestions childs */
+    .tag-suggestions > div {
+        border: blue solid 1px;
+    }
+
+    </style>
+    
+    
+<body>
+    <header>
+        <img src="logo.svg" alt="Logo" />
+        <div class="input-group">
+            <div class="search-wrapper">
+                <input type="text" class="form-control" placeholder="Recherche" id="searchInput">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        </div>
+        <div class="tag-suggestions">
+            <span class="ingredients">Ingrédients</span>
+            <span class="cooking-hardware">Appareils</span>
+            <span class="tools">Ustensiles</span>
+        </div>
+    </header>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
