@@ -123,9 +123,6 @@
         transition: transform 0.15s;
     }
 
-    /* .category-input.change-opacity-placeholder::placeholder {
-        opacity: 0.5;
-    } */
 
     .tag-suggestions > li {
         /* min-height: 2.75rem; */
@@ -143,14 +140,25 @@
         border: none;
         background-color: transparent;
         outline: none;
-        color: white;
+        /* color: white; */
         width: 100%;
         font-weight: bold;
         padding: 1rem 0 1rem 1rem;
     }
-    .category-input::placeholder {
+
+    input[type="text"] {
+        color: rgb(255, 255, 255);
+    }
+
+    input[type="text"]::placeholder {
         color: white;
-        opacity: 0.5;
+        opacity:0.5;
+    }
+
+    /* Input color fix for WebKit navigators (Chrome, Safari) */
+    input[type="text"]::-webkit-input-placeholder {
+        color: white;
+        opacity:0.5;
     }
     
     .ingredients{
