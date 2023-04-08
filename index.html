@@ -96,18 +96,46 @@
         width: 100%;
         padding: 0;
     }
-    .fas.fa-chevron-down {
-        margin-left: 2rem;
+    .search-menu-button {
+        background-color: transparent;
+        border: none;
+        font-size: 1rem;
+        color: white;
+        cursor: pointer;
+        display: block;
+        margin: 0;
+        padding: 0;
+        font-family: 'Lato', sans-serif;
+        font-weight: bold;
     }
+
+    .fas.fa-chevron-down, .fas.fa-chevron-up {
+        padding: 1rem;
+        /* padding-top: 0.5rem;
+        padding-right: 0.5rem; */
+    }
+    .search-menu-button{
+        padding: 1rem 1rem 1rem 1rem;
+    }
+
+    .rotate-chevron {
+        transform: rotate(180deg);
+        transition: transform 0.15s;
+    }
+
+    /* .category-input.change-opacity-placeholder::placeholder {
+        opacity: 0.5;
+    } */
+
     .tag-suggestions > li {
-        padding: 0.5rem 1rem;
-        min-height: 2.75rem;
-        line-height: 2.75rem;
+        /* min-height: 2.75rem; */
+        /* line-height: 2.75rem; */
         align-items: flex-start;
         border-radius: 4px;
         color: white;
         cursor: pointer;
     }
+    
     .category-input-container {
         display: flex;
     }
@@ -118,13 +146,13 @@
         color: white;
         width: 100%;
         font-weight: bold;
+        padding: 1rem 0 1rem 1rem;
     }
     .category-input::placeholder {
         color: white;
-    }
-    .change-opacity-placeholder {
         opacity: 0.5;
     }
+    
     .ingredients{
         background-color: #3282F7;
     }
@@ -138,6 +166,10 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 1rem;
+        cursor: initial;
+        /* Hide at the beginning */
+        display: none;
+        padding: 0.5rem 1rem;
     }
     .active {
         background-color: #3d8af7;
@@ -186,7 +218,10 @@
         justify-content: space-between;
         height: 100%;
     }
-
+    .icon-container {
+    display: inline-block;
+    cursor: pointer;
+}
     </style>
    
     
@@ -206,47 +241,43 @@
         </div>
         <nav>
             <ul class="tag-suggestions">
-                <li class="ingredients">
+                <li class="ingredients" id = "menu-ingredients">
                     <div class="category-input-container">
-                        <input type="text" class="category-input" placeholder="Ingrédients" id="input-ingredients">
-                        <i class="fas fa-chevron-down" aria-hidden="true" id="icon-ingredients"></i>
-                    </div>
+                        <button class="search-menu-button" id="input-ingredients">Ingrédients</button>
+                        <input type="text" class="category-input" placeholder="Rechercher un ingrédient" id="input-ingredients-input" style="display:none;">
+                        <span class="icon-container"><i class="fas fa-chevron-down" aria-hidden="true" id="icon-ingredients"></i></span>
+                      </div>
 
-                    <div class="search-results" id="search-results-ingredients">
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                        <p>Lait de coco</p>
-                    </div>
-                </li>
-
-                <li class="cooking-hardware">
-                    <div class="category-input-container">
-                        <input type="text" class="category-input" placeholder="Appareils" id="input-cooking-hardware">
-                        <i class="fas fa-chevron-down" aria-hidden="true" id="icon-cooking-hardware"></i>
-                    </div>
-
-                    <div class="search-results" display="none" id = "search-results-cooking-hardware">
+                    <div class="search-results" display="none" id="search-results-ingredients">
                         <!-- Résultats de recherche pour les appareils -->
+                        <p class="choose-keyword" ><i>Choisissez un mot-clef pour lancer votre recherche</i></p>
                     </div>
                 </li>
 
-                <li class="tools">
+                <li class="cooking-hardware" id = "menu-cooking-hardware">
+                    
                     <div class="category-input-container">
-                        <input type="text" class="category-input" placeholder="Ustensiles" id="input-tools">
-                        <i class="fas fa-chevron-down" aria-hidden="true" id="icon-tools"></i>
+                        <button class="search-menu-button" placeholder="Appareils" id="input-cooking-hardware">Appareils</button>
+                        <input type="text" class="category-input" placeholder="Rechercher un appareil" id="input-cooking-hardware-input" style="display:none;">
+                        <span class="icon-container"><i class="fas fa-chevron-down" aria-hidden="true" id="icon-cooking-hardware"></i></span>
+                    </div>
+
+                    <div class="search-results" display="none"  id = "search-results-cooking-hardware">
+                        <!-- Résultats de recherche pour les appareils -->
+                        <p class="choose-keyword" ><i>Choisissez un mot-clef pour lancer votre recherche</i></p>
+                    </div>
+                </li>
+
+                <li class="tools" id = "menu-tools">
+                    <div class="category-input-container">
+                        <button class="search-menu-button" placeholder="Ustensiles" id="input-tools">Ustensiles</button>
+                        <input type="text" class="category-input" placeholder="Rechercher un ustensile" id="input-tools-input" style="display:none;">
+                        <span class="icon-container"><i class="fas fa-chevron-down" aria-hidden="true" id="icon-tools"></i></span>
                     </div>
 
                     <div class="search-results" display="none" id = "search-results-tools">
                         <!-- Résultats de recherche pour les ustensiles -->
+                        <p class="choose-keyword" ><i>Choisissez un mot-clef pour lancer votre recherche</i></p>
                     </div>
                 </li>
                 
@@ -392,44 +423,62 @@
             
         </div>
     </main>
-
     <script>
-        //Display search results if the user clicks on the search icon and the search results is not empty.
-        function toggleActive(inputId, resultsId, iconId) {
-            const inputElement = document.getElementById(inputId);
-            const searchResults = document.getElementById(resultsId);
-            const iconElement = document.getElementById(iconId);
+    function toggleMenu(menuItem) {
+        const inputElement = menuItem.querySelector('input[type="text"]');
+        const searchResults = menuItem.querySelector('.search-results');
+        const iconElement = menuItem.querySelector('i');
+        const buttonElement = menuItem.querySelector('button');
 
-            if (searchResults.innerHTML.trim() === "") {
-                return;
-            }
-            //Check if the search results are displayed or not. Hide or show them.
-            //If the display is grid or empty, then hide the search results.
-            //Empty is for the first time the page is loaded (no display property is set).
-            if (searchResults.style.display === 'grid' || searchResults.style.display === '') {
-                searchResults.style.display = 'none';
-                inputElement.classList.remove('change-opacity-placeholder');
-                iconElement.classList.remove('fa-chevron-up');
-                iconElement.classList.add('fa-chevron-down');
-            } else {
-                searchResults.style.display = 'grid';
-                inputElement.classList.add('change-opacity-placeholder');
-                iconElement.classList.remove('fa-chevron-down');
-                iconElement.classList.add('fa-chevron-up');
-            }
+        if (iconElement.classList.contains('fa-chevron-down')) {
+            searchResults.style.display = 'grid';
+            inputElement.style.display = 'block';
+            buttonElement.style.display = 'none';
+            iconElement.classList.replace('fa-chevron-down', 'fa-chevron-up');
+
+            searchResults.style.gridTemplateColumns = '1fr';
+            searchResults.style.fontSize = '0.75rem';
+            searchResults.style.justifyItems = 'center';
+            searchResults.style.alignItems = 'center';
+        } else {
+            buttonElement.style.display = 'block';
+            searchResults.style.display = 'none';
+            inputElement.style.display = 'none';
+            iconElement.classList.replace('fa-chevron-up', 'fa-chevron-down');
         }
-        document.getElementById('icon-ingredients').addEventListener('click', function () {
-            toggleActive('input-ingredients', 'search-results-ingredients', 'icon-ingredients');
+    }
+
+    function addMenuClickListener(menuId) {
+        const menuElement = document.getElementById(menuId);
+        const iconElement = menuElement.querySelector('i');
+
+        menuElement.addEventListener('click', function (event) {
+            if (iconElement.classList.contains('fa-chevron-up')) {
+                event.stopPropagation();
+            } else {
+                toggleMenu(menuElement);
+            }
         });
 
-        document.getElementById('icon-cooking-hardware').addEventListener('click', function () {
-            toggleActive('input-cooking-hardware', 'search-results-cooking-hardware', 'icon-cooking-hardware');
+        iconElement.addEventListener('click', function (event) {
+            toggleMenu(menuElement);
+            event.stopPropagation();
         });
 
-        document.getElementById('icon-tools').addEventListener('click', function () {
-            toggleActive('input-tools', 'search-results-tools', 'icon-tools');
+        const inputElement = menuElement.querySelector('input[type="text"]');
+        inputElement.addEventListener('click', function (event) {
+            event.stopPropagation();
         });
-    </script>
+    }
+
+    addMenuClickListener('menu-ingredients');
+    addMenuClickListener('menu-cooking-hardware');
+    addMenuClickListener('menu-tools');
+</script>
+
+    
+    
+    
 </body>
 </html>
 
