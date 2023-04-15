@@ -33,14 +33,28 @@ function createRecipeCard(recipe) {
     recipeIngredients.classList.add("recipe-ingredients");
     recipe.ingredients.forEach(ingredient => {
         const p = document.createElement("p");
-        p.innerHTML = `<span>${ingredient.ingredient}:</span> ${ingredient.quantity}${ingredient.unit ? " " + ingredient.unit : ""}`;
+        let ingredientText = `<span>${ingredient.ingredient}`;
+        if (ingredient.hasOwnProperty("quantity") || ingredient.hasOwnProperty("unit")) {
+          ingredientText += ":</span>";
+        } else {
+          ingredientText += "</span>";
+        }
+        if (ingredient.hasOwnProperty("quantity")) {
+          ingredientText += ` ${ingredient.quantity}`;
+        }
+        if (ingredient.hasOwnProperty("unit")) {
+          ingredientText += ` ${ingredient.unit}`;
+        }
+        p.innerHTML = ingredientText;
         recipeIngredients.appendChild(p);
     });
+      
+      
   
     const instructions = document.createElement("div");
     instructions.classList.add("instructions");
     const instructionsP = document.createElement("p");
-    instructionsP.textContent = recipe.instructions;
+    instructionsP.textContent = recipe.description;
     instructions.appendChild(instructionsP);
   
     ingredientsAndInstructions.appendChild(recipeIngredients);

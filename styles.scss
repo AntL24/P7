@@ -204,7 +204,6 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 25rem;
   aspect-ratio: 1/1;
   border-radius: 5px;
   overflow: hidden;
@@ -228,15 +227,17 @@ main {
   height:50%;
 }
 .title-and-time {
-  display: flex;
+  display: inline-flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+  max-height: 1.3rem;
+  overflow: hidden;  
+
   h3 {
     font-size: 1.2rem;
     font-weight: initial;
     margin: 0;
+    max-width: 75%;
   }
   span {
     font-size: 1.05rem;
@@ -249,16 +250,34 @@ main {
 .ingredients-and-instructions {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  height: 100%;
+  justify-content: space-around;
+  height: 70%;
+  margin : 1rem 0 1rem 0;
+  overflow: hidden;
+  padding-bottom: 1rem;
+  
   .recipe-ingredients {
     max-width: 50%;
+    padding-bottom:2rem;
+    //Prevent the text from being cut off on last line
+    -webkit-column-width: 150px; //You can't use 100%
+    column-width: 150px;
+    height: 100%;
+    overflow: hidden;
     p span {
       font-weight: bold;
     }
   }
   .instructions {
     max-width: 50%;
+    overflow: hidden;
+    //Prevent the text from being cut off on last line
+    -webkit-column-width: 150px; //You can't use 100%
+    column-width: 150px;
+    height: 100%;
+    p {
+      margin-bottom: 2rem;
+    }
   }
 }
 .icon-container {
