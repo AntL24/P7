@@ -1,0 +1,293 @@
+* {
+  font-family: "Lato", sans-serif;
+}
+
+body {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+/*Search bar  */
+.input-group {
+  width: 90%;
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 8px 40px 8px 12px;
+  border: none;
+  font-size: 1rem;
+  height: 2rem;
+  background-color: #E7E7E7;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  font-size: 1.5rem;
+  color: #000;
+  pointer-events: none;
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: #3d8af7;
+}
+
+/* Selected tags */
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 90%;
+}
+
+.selected-tags > .tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tag-text {
+  font-size: 0.8rem;
+  margin-right: 1rem;
+}
+
+.fa-times-circle {
+  font-size: 1.3rem;
+}
+
+.ingredients-tag {
+  background-color: #3282f7;
+}
+
+.cooking-hardware-tag {
+  background-color: #68d9a4;
+}
+
+.tools-tag {
+  background-color: #ed6454;
+}
+
+/* Suggestions */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
+}
+
+.tag-suggestions {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  padding: 0;
+}
+
+.search-menu-button {
+  background-color: transparent;
+  border: none;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-family: "Lato", sans-serif;
+  font-weight: bold;
+}
+
+.fas.fa-chevron-down,
+.fas.fa-chevron-up {
+  padding: 1rem;
+  /* padding-top: 0.5rem;
+        padding-right: 0.5rem; */
+}
+
+.search-menu-button {
+  padding: 1rem 1rem 1rem 1rem;
+}
+
+.rotate-chevron {
+  transform: rotate(180deg);
+  transition: transform 0.15s;
+}
+
+.tag-suggestions > li {
+  /* min-height: 2.75rem; */
+  /* line-height: 2.75rem; */
+  align-items: flex-start;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+.category-input-container {
+  display: flex;
+}
+
+.category-input {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  width: 100%;
+  font-weight: bold;
+  padding: 1rem 0 1rem 1rem;
+}
+
+.white-text-input {
+  color: rgb(255, 255, 255);
+}
+
+.white-text-input::placeholder {
+  color: white;
+  opacity: 0.5;
+}
+
+/* Input color fix for WebKit navigators (Chrome, Safari) */
+.white-text-input::-webkit-input-placeholder {
+  color: white;
+  opacity: 0.5;
+}
+
+.ingredients {
+  background-color: #3282f7;
+}
+
+.cooking-hardware {
+  background-color: #68d9a4;
+}
+
+.tools {
+  background-color: #ed6454;
+}
+
+.search-results {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  cursor: initial;
+  /* Hide at the beginning */
+  display: none;
+  padding: 0.5rem 1rem;
+}
+
+.active {
+  background-color: #3d8af7;
+}
+
+/* Recipes grid */
+main {
+  margin-top: 1.5rem;
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.recipe-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Image and content one on top of the other */
+.recipe-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 25rem;
+  aspect-ratio: 1/1;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/* title and time on a row. Same for ingredients and instructions */
+.recipe-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 50%;
+  background-color: #E7E7E7;
+  padding: 0.5rem;
+}
+.recipe-card-content p {
+  margin: 0.2rem;
+  font-size: 0.8rem;
+}
+
+.recipe-card-image {
+  height: 50%;
+}
+
+.title-and-time {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+.title-and-time h3 {
+  font-size: 1.2rem;
+  font-weight: initial;
+  margin: 0;
+}
+.title-and-time span {
+  font-size: 1.05rem;
+  font-weight: bold;
+}
+
+.recipe-card-time {
+  font-weight: bold;
+}
+
+.ingredients-and-instructions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+}
+.ingredients-and-instructions .recipe-ingredients {
+  max-width: 50%;
+}
+.ingredients-and-instructions .recipe-ingredients p span {
+  font-weight: bold;
+}
+.ingredients-and-instructions .instructions {
+  max-width: 50%;
+}
+
+.icon-container {
+  display: inline-block;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=styles.css.map */
