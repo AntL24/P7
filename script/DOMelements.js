@@ -82,32 +82,52 @@ function displayRecipes(recipes) {
 }
 function updateTagSearchResults(category, searchTerm, recipes) {
   const searchResultsElement = document.getElementById(`search-results-${category}`);
-  searchResultsElement.innerHTML = ""; //Clear previous search results
+  searchResultsElement.innerHTML = ""; // Clear previous search results
+
+  // Function to handle click event on tags
+  function handleTagClick(event, category) {
+    const selectedTags = document.querySelector(".selected-tags");
+    const tagElement = document.createElement("div");
+    const tagText = document.createElement("span");
+    const tagIcon = document.createElement("i");
+  
+    tagElement.classList.add(`${category}-tag`, "tag");
+    tagText.classList.add("tag-text");
+    tagIcon.classList.add("far", "fa-times-circle");
+    tagIcon.setAttribute("aria-hidden", "true");
+  
+    tagText.textContent = event.target.textContent;
+  
+    tagElement.appendChild(tagText);
+    tagElement.appendChild(tagIcon);
+    selectedTags.appendChild(tagElement);
+  }
+  
 
   if (searchTerm.length < 3) {
     searchResultsElement.style.gridTemplateColumns = "1fr";
     searchResultsElement.innerHTML = '<p class="choose-keyword"><i>Choisissez un mot-clef pour lancer votre recherche</i></p>';
   } else if (searchTerm.length >= 3) {
     let filteredTags;
-    //Get tags based on category
+    // Get tags based on category
     if (category === "ingredients") {
       filteredTags = recipes.flatMap(recipe => recipe.ingredients.map(ingredient => ingredient.ingredient));
     } else if (category === "appliance") {
       filteredTags = recipes.map(recipe => recipe.appliance);
-      console.log("filteredTags", filteredTags);
     } else if (category === "tools") {
       filteredTags = recipes.flatMap(recipe => recipe.ustensils);
     }
 
-    //Filter tags to remove duplicates and to only keep tags that include the search term
+    // Filter tags to remove duplicates and to only keep tags that include the search term
     filteredTags = Array.from(new Set(filteredTags.filter(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))));
-    
-    //Manipulate DOM to display tags
+
+    // Manipulate DOM to display tags
     filteredTags.forEach(tag => {
       const tagElement = document.createElement("span");
       tagElement.textContent = tag;
       tagElement.classList.add("tag-container");
       searchResultsElement.appendChild(tagElement);
+      tagElement.addEventListener("click", (event) => handleTagClick(event, category));
     });
 
     // Add style for 3 tags per row
@@ -115,12 +135,13 @@ function updateTagSearchResults(category, searchTerm, recipes) {
     searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
     searchResultsElement.style.gap = "1rem";
 
-    //If no tags match the search term, display a message
+    // If no tags match the search term, display a message
     if (filteredTags.length === 0) {
       searchResultsElement.style.gridTemplateColumns = "1fr";
       searchResultsElement.innerHTML = '<p class="no-match"><i>Aucun résultat ne correspond à votre recherche</i></p>';
     }
   }
 }
+
 
 export {displayRecipes, updateTagSearchResults};

@@ -85,7 +85,7 @@ header {
   background-color: #3282f7;
 }
 
-.cooking-hardware-tag {
+.appliance-tag {
   background-color: #68d9a4;
 }
 
@@ -134,12 +134,12 @@ nav {
 
 .rotate-chevron {
   transform: rotate(360deg);
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.18s ease-in-out;
 }
 
 .no-rotate-chevron {
   transform: rotate(0deg);
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.18s ease-in-out;
 }
 
 .tag-suggestions > li {
