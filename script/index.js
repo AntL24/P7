@@ -1,6 +1,6 @@
-import { displayRecipes } from './DOMelements.js';
+import { displayRecipes, updateTagSearchResults } from './DOMelements.js';
 import { recipes } from "../recipes.js";
-import { searchAlgorithm } from "./inputSearchAlgorithm.js";
+import { searchAlgorithm } from "./algorithms/inputSearchAlgorithm.js";
 import { addMenuClickListener } from './filterMenu.js';
 
 //Default gallery
@@ -18,11 +18,29 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Search results: " + searchResults);
             //Display search results
             displayRecipes(searchResults);
+        } else if (searchInput.value.length === 0) {
+            //Display default gallery
+            displayRecipes(recipes);
         }
     });
 });
 
-//Add click listeners to filter menus
+//Tag menu animations with event listeners and DOM manipulation
+//=> Call function to add event listeners on click for each filter menu
 addMenuClickListener('menu-ingredients');
 addMenuClickListener('menu-cooking-hardware');
 addMenuClickListener('menu-tools');
+
+
+//Add tagg event listeners to display search results for each tag category
+document.getElementById("input-ingredients-input").addEventListener("input", (event) => {
+    updateTagSearchResults("ingredients", event.target.value, recipes);
+  });
+  
+  document.getElementById("input-cooking-hardware-input").addEventListener("input", (event) => {
+    updateTagSearchResults("appliance", event.target.value, recipes);
+  });
+  
+  document.getElementById("input-tools-input").addEventListener("input", (event) => {
+    updateTagSearchResults("tools", event.target.value, recipes);
+  });

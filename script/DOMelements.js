@@ -1,3 +1,4 @@
+//Recipe card constructor
 function createRecipeCard(recipe) {
     const recipeCard = document.createElement("div");
     recipeCard.classList.add("recipe-card");
@@ -69,7 +70,8 @@ function createRecipeCard(recipe) {
   
     return recipeCard;
 }
-  
+
+//Display gallery of recipes
 function displayRecipes(recipes) {
     const recipesGrid = document.querySelector(".recipes-grid");
     recipesGrid.innerHTML = "";
@@ -78,5 +80,41 @@ function displayRecipes(recipes) {
       recipesGrid.appendChild(recipeCard);
     });
 }
-  export {displayRecipes};
-    
+
+//Update results for tag search (may be ingredients, appliance or ustensils)
+function updateTagSearchResults(category, searchTerm, recipes) {
+  const searchResultsElement = document.getElementById(`search-results-${category}`);
+  searchResultsElement.innerHTML = "";//Clear previous search results
+
+  if (searchTerm.length < 3) {
+    searchResultsElement.innerHTML = '<p class="choose-keyword"><i>Choisissez un mot-clef pour lancer votre recherche</i></p>';
+  } else if (searchTerm.length >= 3) {
+
+    let filteredTags;
+    //Get tags based on category
+    if (category === "ingredients") {
+      filteredTags = recipes.flatMap(recipe => recipe.ingredients.map(ingredient => ingredient.ingredient));
+    } else if (category === "appliance") {
+      filteredTags = recipes.map(recipe => recipe.appliance); 
+      console.log("filteredTags", filteredTags)
+    } else if (category === "tools") {
+      filteredTags = recipes.flatMap(recipe => recipe.ustensils);
+    }
+
+    //Filter tags to remove duplicates and to only keep tags that include the search term
+    filteredTags = Array.from(new Set(filteredTags.filter(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))));
+    //Manipulate DOM to display tags
+    filteredTags.forEach(tag => {
+      const tagElement = document.createElement("p");
+      tagElement.textContent = tag;
+      searchResultsElement.appendChild(tagElement);
+    });
+
+    //If no tags match the search term, display a message
+    if (filteredTags.length === 0) {
+      searchResultsElement.innerHTML = '<p class="no-match"><i>Aucun résultat ne correspond à votre recherche</i></p>';
+    }
+  }
+}
+
+export {displayRecipes, updateTagSearchResults};
