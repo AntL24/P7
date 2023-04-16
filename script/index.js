@@ -1,6 +1,7 @@
 import { displayRecipes } from './DOMelements.js';
 import { recipes } from "../recipes.js";
 import { searchAlgorithm } from "./inputSearchAlgorithm.js";
+import { addMenuClickListener } from './filterMenu.js';
 
 //Default gallery
 displayRecipes(recipes);
@@ -20,3 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+//Add click listeners to filter menus
+addMenuClickListener('menu-ingredients');
+addMenuClickListener('menu-cooking-hardware');
+addMenuClickListener('menu-tools');

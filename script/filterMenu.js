@@ -50,8 +50,4 @@ function addMenuClickListener(menuId) {
     });
 }
 
-addMenuClickListener('menu-ingredients');
-addMenuClickListener('menu-cooking-hardware');
-addMenuClickListener('menu-tools');
-
 export {addMenuClickListener};
