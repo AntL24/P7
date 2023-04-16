@@ -123,8 +123,12 @@ nav {
 }
 
 .rotate-chevron {
-  transform: rotate(180deg);
-  transition: transform 0.15s;
+  transform: rotate(360deg);
+  transition: transform 0.3s ease-in-out;
+}
+.no-rotate-chevron {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease-in-out;
 }
 
 .tag-suggestions > li {
@@ -238,6 +242,9 @@ main {
     font-weight: initial;
     margin: 0;
     max-width: 75%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   span {
     font-size: 1.05rem;
@@ -266,6 +273,9 @@ main {
     overflow: hidden;
     p span {
       font-weight: bold;
+      text-overflow: ellipsis;
+      // white-space: nowrap;
+      overflow: hidden;
     }
   }
   .instructions {
@@ -277,7 +287,20 @@ main {
     height: 100%;
     p {
       margin-bottom: 2rem;
+      
     }
+    position: relative; /* Ajoutez cette ligne */
+  }
+  
+  //Add a gradient to the bottom of the instructions
+  .instructions ::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3em;
+    background-image: linear-gradient(to top, #E7E7E7 0%, rgba(255, 255, 255, 0) 100%);
   }
 }
 .icon-container {

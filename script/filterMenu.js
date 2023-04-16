@@ -9,6 +9,9 @@ function toggleMenu(menuItem) {
         inputElement.style.display = 'block';
         buttonElement.style.display = 'none';
         iconElement.classList.replace('fa-chevron-down', 'fa-chevron-up');
+        //Add rotate-chevron class to icon
+        iconElement.classList.add('rotate-chevron');
+        iconElement.classList.remove('no-rotate-chevron');
 
         searchResults.style.gridTemplateColumns = '1fr';
         searchResults.style.fontSize = '0.75rem';
@@ -19,6 +22,8 @@ function toggleMenu(menuItem) {
         searchResults.style.display = 'none';
         inputElement.style.display = 'none';
         iconElement.classList.replace('fa-chevron-up', 'fa-chevron-down');
+        //Remove rotate-chevron class to icon
+        iconElement.classList.replace('rotate-chevron', 'no-rotate-chevron');
     }
 }
 

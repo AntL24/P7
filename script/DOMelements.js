@@ -1,5 +1,3 @@
-import {recipes} from "../recipes.js";
-
 function createRecipeCard(recipe) {
     const recipeCard = document.createElement("div");
     recipeCard.classList.add("recipe-card");
@@ -54,7 +52,10 @@ function createRecipeCard(recipe) {
     const instructions = document.createElement("div");
     instructions.classList.add("instructions");
     const instructionsP = document.createElement("p");
-    instructionsP.textContent = recipe.description;
+    instructionsP.classList.add("ellipsis"); 
+    const instructionsSpan = document.createElement("span"); 
+    instructionsSpan.textContent = recipe.description; 
+    instructionsP.appendChild(instructionsSpan);
     instructions.appendChild(instructionsP);
   
     ingredientsAndInstructions.appendChild(recipeIngredients);
@@ -77,7 +78,5 @@ function displayRecipes(recipes) {
       recipesGrid.appendChild(recipeCard);
     });
 }
-  
-displayRecipes(recipes);
-
+  export {displayRecipes};
     
