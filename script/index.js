@@ -1,6 +1,6 @@
 import { displayRecipes } from './DOMelements.js';
-import {recipes} from "../recipes.js";
-import  {searchAlgorithm} from "./inputSearchAlgorithm.js";
+import { recipes } from "../recipes.js";
+import { searchAlgorithm } from "./inputSearchAlgorithm.js";
 
 //Default gallery
 displayRecipes(recipes);
@@ -11,8 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     searchInput.addEventListener("input", function () {
         if (searchInput.value.length >= 3) {
+            console.log("Search input: " + searchInput.value)
             //Call search function
-            searchAlgorithm(searchInput.value);
+            const searchResults = searchAlgorithm(searchInput.value, recipes);
+            console.log("Search results: " + searchResults);
+            //Display search results
+            displayRecipes(searchResults);
         }
     });
 });
