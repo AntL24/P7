@@ -3,6 +3,7 @@ function toggleMenu(menuItem) {
     const searchResults = menuItem.querySelector('.search-results');
     const iconElement = menuItem.querySelector('i');
     const buttonElement = menuItem.querySelector('button');
+    const noResults = searchResults.querySelector('.choose-keyword');
 
     if (iconElement.classList.contains('fa-chevron-down')) {
         searchResults.style.display = 'grid';
@@ -13,10 +14,13 @@ function toggleMenu(menuItem) {
         iconElement.classList.add('rotate-chevron');
         iconElement.classList.remove('no-rotate-chevron');
 
+        // Apply single column style only when no results are present
+    if (noResults) {
         searchResults.style.gridTemplateColumns = '1fr';
         searchResults.style.fontSize = '0.75rem';
         searchResults.style.justifyItems = 'center';
         searchResults.style.alignItems = 'center';
+        }
     } else {
         buttonElement.style.display = 'block';
         searchResults.style.display = 'none';
