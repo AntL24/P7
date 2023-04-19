@@ -195,7 +195,7 @@ function updateTagSearchResults(category, searchTerm, recipes) {
     // Add style for category tag search results : 3 tags per row
     searchResultsElement.style.display = "grid";
     searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
-    searchResultsElement.style.gap = "1rem";
+    // searchResultsElement.style.gap = "1rem";
 
     // If no tags match the category search input, display a message
     if (filteredTags.length === 0) {

@@ -1,28 +1,42 @@
 function tagSearchAlgorithm(recipes, tags) {
-  console.log("Tags in search algorithm: " + JSON.stringify(tags, null, 2));
+  let filteredRecipes = [];
 
-  recipes = recipes.filter(recipe => {
-    return tags.every(tag => {
-      console.log("Tag in search algorithm: " + JSON.stringify(tag, null, 2));
+  outerLoop: for (let recipe of recipes) {
+    for (let tag of tags) {
       const tagCategory = tag.category;
       const tagText = tag.name.toLowerCase();
 
-      if (tagCategory === "ingredients") {
-        return recipe.ingredients.some(ingredient =>
-          ingredient.ingredient.toLowerCase().includes(tagText)
-        );
-      } else if (tagCategory === "appliance") {
-        return recipe.appliance.toLowerCase().includes(tagText);
-      } else if (tagCategory === "tools") {
-        return recipe.ustensils.some(ustensil =>
-          ustensil.toLowerCase().includes(tagText)
-        );
-      }
-      return false;
-    });
-  });
+      let tagMatched = false;
 
-  return recipes;
+      if (tagCategory === "ingredients") {
+        for (let ingredient of recipe.ingredients) {
+          if (ingredient.ingredient.toLowerCase().includes(tagText)) {
+            tagMatched = true;
+            break;
+          }
+        }
+      } else if (tagCategory === "appliance") {
+        if (recipe.appliance.toLowerCase().includes(tagText)) {
+          tagMatched = true;
+        }
+      } else if (tagCategory === "tools") {
+        for (let ustensil of recipe.ustensils) {
+          if (ustensil.toLowerCase().includes(tagText)) {
+            tagMatched = true;
+            break;
+          }
+        }
+      }
+
+      if (!tagMatched) {
+        continue outerLoop;
+      }
+    }
+
+    filteredRecipes.push(recipe);
+  }
+
+  return filteredRecipes;
 }
 
 export { tagSearchAlgorithm };

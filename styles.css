@@ -1,3 +1,4 @@
+@charset "UTF-8";
 * {
   font-family: "Lato", sans-serif;
 }
@@ -9,6 +10,7 @@ body {
 }
 
 header {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -95,6 +97,8 @@ header {
 
 /* Suggestions */
 nav {
+  position: relative;
+  z-index: 100;
   display: flex;
   flex-wrap: wrap;
   width: 90%;
@@ -102,6 +106,7 @@ nav {
 
 .tag-suggestions {
   display: flex;
+  position: absolute;
   align-items: flex-start;
   gap: 1rem;
   width: 100%;
@@ -149,6 +154,7 @@ nav {
   border-radius: 4px;
   color: white;
   cursor: pointer;
+  max-width: 50%;
 }
 
 .category-input-container {
@@ -199,6 +205,32 @@ nav {
   /* Hide at the beginning */
   display: none;
   padding: 0.5rem 1rem;
+  max-height: 20rem;
+  overflow-y: auto;
+}
+
+/* Cache la barre de défilement par défaut */
+#search-results-appliance::-webkit-scrollbar,
+#search-results-ingredients::-webkit-scrollbar,
+#search-results-tools::-webkit-scrollbar {
+  width: 10px;
+  background: transparent;
+}
+
+/* Style du curseur de défilement - invisible par défaut */
+#search-results-appliance::-webkit-scrollbar-thumb,
+#search-results-ingredients::-webkit-scrollbar-thumb,
+#search-results-tools::-webkit-scrollbar-thumb {
+  background: transparent;
+  transition: background 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+/* Lorsque la souris survole la zone scrollable, le curseur de défilement devient visible */
+#search-results-appliance:hover::-webkit-scrollbar-thumb,
+#search-results-ingredients:hover::-webkit-scrollbar-thumb,
+#search-results-tools:hover::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, rgba(128, 128, 128, 0.5), rgba(80, 80, 80, 0.5));
 }
 
 .tag-container {
@@ -217,7 +249,10 @@ nav {
 
 /* Recipes grid */
 main {
+  position: absolute;
+  top: 20rem;
   margin-top: 1.5rem;
+  width: 90%;
 }
 
 .recipes-grid {
@@ -315,7 +350,7 @@ main {
   -webkit-column-width: 150px;
   column-width: 150px;
   height: 100%;
-  position: relative; /* Ajoutez cette ligne */
+  position: relative;
 }
 .ingredients-and-instructions .instructions p {
   margin-bottom: 2rem;
