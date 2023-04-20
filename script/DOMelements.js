@@ -1,5 +1,6 @@
 import { searchAlgorithm } from "./algorithms/inputSearchAlgorithm.js";
 import { defaultDisplayTags } from "./filterMenu.js";
+import { updateAllCategories } from "./filterMenu.js";
 //Recipe card constructor 
 function createRecipeCard(recipe) {
     const recipeCard = document.createElement("div");
@@ -118,6 +119,7 @@ function refreshGallery(recipes) {
       }
       //Display search results
       displayRecipes(searchResults);
+      updateAllCategories(recipes, searchResults);
 }
 
 
@@ -132,6 +134,9 @@ function refreshGallery(recipes) {
     //Remove tag from selected tags list when clicking on the icon "far fa-times-circle"
     tagIcon.addEventListener("click", (event) => {
       event.target.parentElement.remove();
+      //Update tag search results when removing a tag (click on icon)
+      // updateTagSearchResults(category, event.target.parentElement.querySelector(".tag-text").textContent, recipes);
+      // defaultDisplayTags(category, recipes, recipes);
       //Update gallery when removing a tag (click on icon)
       refreshGallery(recipes);
     });
@@ -155,55 +160,67 @@ function refreshGallery(recipes) {
     }
     //Refresh gallery when adding a tag (click on tag)
     refreshGallery(recipes);
+    console.log("Tag added", category, event.target.textContent);
+    //Update tag search results when adding a tag (click on tag)
+    // updateTagSearchResults(category, event.target.textContent, recipes);
+    // defaultDisplayTags(category, recipes, recipes);
+    
   }
 
 //Display tags results in category menu search
-function updateTagSearchResults(category, searchTerm, recipes) {
+function updateTagSearchResults(category, searchTerm, recipes, filteredRecipes) {
   const searchResultsElement = document.getElementById(`search-results-${category}`);
   searchResultsElement.innerHTML = ""; // Clear previous search results
   searchResultsElement.style.display = "grid";
   searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
-
-  //
-  // handleTagClick(event, category, recipes);
-  
   //Minimum requirement to search 3 characters is met
   if (searchTerm.length >= 3) {
-    tagsSearchUpdate(category, searchTerm, recipes);
-
-  } else {
-    tagsSearchUpdate(category, searchTerm, recipes);
-      // If search input is empty, hide category tag search results and display default tags
-      // defaultDisplayTags(category, recipes);
-    //If search input is empty, but tags are selected, display selected tags
-    if (document.querySelector(".selected-tags").innerHTML !== "") {
-      console.log("Search input is empty but tags are selected")
-      refreshGallery(recipes);} else {
-        console.log("Search input is empty")
-      }
+    
+  tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes);
+    } else {
+      defaultDisplayTags(category, recipes, filteredRecipes);
     }
 }
 
-function tagsSearchUpdate(category, searchTerm, recipes) {
+function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
+
     const searchResultsElement = document.getElementById(`search-results-${category}`);
+
     // Initialize variable to store filtered tags
     let filteredTags;
 
     // Get tags based on category search (ingredients, appliance, tools)
     if (category === "ingredients") {
-      filteredTags = recipes.flatMap(recipe => recipe.ingredients.map(ingredient => ingredient.ingredient));
+      filteredTags = filteredRecipes.flatMap(recipe => recipe.ingredients.map(ingredient => ingredient.ingredient));
     } else if (category === "appliance") {
-      filteredTags = recipes.map(recipe => recipe.appliance);
+      filteredTags = filteredRecipes.map(recipe => recipe.appliance);
     } else if (category === "tools") {
-      filteredTags = recipes.flatMap(recipe => recipe.ustensils);
+      filteredTags = filteredRecipes.flatMap(recipe => recipe.ustensils);
     }
 
-    //If searchTerm exist, filter tags to remove duplicates and to only keep tags that include the search term
+    //If searchTerm exist, filter tags to remove duplicates and to only keep tags that include the search term,
+    //and to only keep tags that are present in the filtered recipes
+
     if (searchTerm) {
       filteredTags = Array.from(new Set(filteredTags.filter(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))));
+      //Only keep tags that are present in the filtered recipes
+      filteredTags = filteredTags.filter(tag => filteredRecipes.some(recipe => {
+        if (category === "ingredients") {
+          return recipe.ingredients.some(ingredient => ingredient.ingredient === tag);
+        }
+        if (category === "appliance") {
+          return recipe.appliance === tag;
+        }
+        if (category === "tools") {
+          return recipe.ustensils.includes(tag);
+        }
+      }));
+    
     } else {
+      console.log("No search term")
       filteredTags = Array.from(new Set(filteredTags));
     }
+
     // Manipulate DOM to display tags according to category input search
     filteredTags.forEach(tag => {
       const tagElement = document.createElement("span");
@@ -221,8 +238,8 @@ function tagsSearchUpdate(category, searchTerm, recipes) {
     if (filteredTags.length === 0) {
       searchResultsElement.style.gridTemplateColumns = "1fr";
       searchResultsElement.innerHTML = '<p class="no-match"><i>Aucun résultat ne correspond à votre recherche</i></p>';
-    }
   }
+}
 
 
 export {displayRecipes, updateTagSearchResults, handleTagClick, refreshGallery};

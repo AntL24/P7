@@ -104,5 +104,13 @@ function defaultDisplayTags(category, recipes, displayedRecipes = null) {
     });
 }
 
+function updateAllCategories(recipes, displayedRecipes = null) {
+    const categories = ['ingredients', 'appliance', 'tools'];
 
-export {addMenuClickListener, defaultDisplayTags};
+    categories.forEach(category => {
+        defaultDisplayTags(category, recipes, displayedRecipes);
+    });
+}
+
+
+export {addMenuClickListener, defaultDisplayTags, updateAllCategories};

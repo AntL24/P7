@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     defaultDisplayTags('tools', recipes);
 });
 
-function handleSearchInput(input) {
+function getTags () {
     const tagElements = document.querySelectorAll(".tag");
     const tags = [];
 
@@ -27,6 +27,22 @@ function handleSearchInput(input) {
         };
         tags.push(tagData);
     });
+    return tags;
+}
+
+function handleSearchInput(input) {
+
+    const tags = getTags();
+    // const tagElements = document.querySelectorAll(".tag");
+    // const tags = [];
+
+    // tagElements.forEach(tag => {
+    //     const tagData = {
+    //         category: tag.classList[0].split("-")[0],
+    //         name: tag.querySelector(".tag-text").textContent
+    //     };
+    //     tags.push(tagData);
+    // });
 
     let filteredRecipes = recipes;
 
@@ -71,13 +87,20 @@ addMenuClickListener('menu-tools', recipes);
 
 //Update tag lists when input is entered
 document.getElementById("input-ingredients-input").addEventListener("input", (event) => {
-    updateTagSearchResults("ingredients", event.target.value, recipes);
-});
+    const tags = getTags();
+    const filteredRecipes = searchAlgorithm("", recipes, tags);
+    updateTagSearchResults("ingredients", event.target.value, recipes, filteredRecipes);
+  });
   
-document.getElementById("input-appliance-input").addEventListener("input", (event) => {
-    updateTagSearchResults("appliance", event.target.value, recipes);
-});
+  document.getElementById("input-appliance-input").addEventListener("input", (event) => {
+    const tags = getTags();
+    const filteredRecipes = searchAlgorithm("", recipes, tags);
+    updateTagSearchResults("appliance", event.target.value, recipes, filteredRecipes);
+  });
   
-document.getElementById("input-tools-input").addEventListener("input", (event) => {
-    updateTagSearchResults("tools", event.target.value, recipes);
-});
+  document.getElementById("input-tools-input").addEventListener("input", (event) => {
+    const tags = getTags();
+    const filteredRecipes = searchAlgorithm("", recipes, tags);
+    updateTagSearchResults("tools", event.target.value, recipes, filteredRecipes);
+  });
+  
