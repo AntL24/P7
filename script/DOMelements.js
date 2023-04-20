@@ -120,7 +120,6 @@ function refreshGallery(recipes) {
       updateAllCategories(recipes, searchResults);
 }
 
-
   // Function to pin tag element and handle click event on tags search elements (close when icon is selected)
   function handleTagClick(event, category, recipes) {
     const selectedTags = document.querySelector(".selected-tags");
@@ -156,6 +155,7 @@ function refreshGallery(recipes) {
     //Refresh gallery when adding a tag (click on tag)
     refreshGallery(recipes);
   }
+
 
 //Update tags on menu input change
 function updateTagSearchResults(category, searchTerm, recipes, filteredRecipes) {
