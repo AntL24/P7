@@ -233,6 +233,14 @@ nav {
   background: linear-gradient(45deg, rgba(128, 128, 128, 0.5), rgba(80, 80, 80, 0.5));
 }
 
+/*Hide horizontal scrollbar */
+#search-results-appliance::-webkit-scrollbar,
+#search-results-ingredients::-webkit-scrollbar,
+#search-results-tools::-webkit-scrollbar {
+  height: 10px;
+  background: transparent;
+}
+
 .tag-container {
   border-radius: 4px;
   border: 0 solid #ccc;

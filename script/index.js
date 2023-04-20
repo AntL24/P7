@@ -6,7 +6,7 @@ import { addMenuClickListener, defaultDisplayTags } from './filterMenu.js';
 //Default gallery
 displayRecipes(recipes);
 
-
+//Initialize page with full gallery and tag menus.
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("searchInput");
     searchInput.addEventListener("input", handleSearchInput);
@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
     defaultDisplayTags('tools', recipes);
 });
 
+
+//Get all tags from the DOM
 function getTags () {
     const tagElements = document.querySelectorAll(".tag");
     const tags = [];
@@ -30,30 +32,20 @@ function getTags () {
     return tags;
 }
 
+//Main search function: filters recipes based on input and tags. Updates gallery and tag menus.
 function handleSearchInput(input) {
 
     const tags = getTags();
-    // const tagElements = document.querySelectorAll(".tag");
-    // const tags = [];
-
-    // tagElements.forEach(tag => {
-    //     const tagData = {
-    //         category: tag.classList[0].split("-")[0],
-    //         name: tag.querySelector(".tag-text").textContent
-    //     };
-    //     tags.push(tagData);
-    // });
-
     let filteredRecipes = recipes;
 
     // If there are tags selected, filter the recipes based on those tags
     if (tags.length > 0) {
         filteredRecipes = searchAlgorithm("", filteredRecipes, tags);
     }
-
+    // If input, filter the recipes based on the input with Algorithm
     if (input.target.value.length >= 3) {
         const searchResults = searchAlgorithm(input.target.value, filteredRecipes, tags);
-
+        // No result error message
         if (searchResults.length === 0) {
             const noResults = document.createElement("p");
             noResults.textContent = "No results found";
@@ -65,20 +57,19 @@ function handleSearchInput(input) {
             recipesGrid.appendChild(noResults);
             return;
         }
-
+        // Update gallery and tag menus
         displayRecipes(searchResults);
         defaultDisplayTags('ingredients', recipes, searchResults);
         defaultDisplayTags('appliance', recipes, searchResults);
         defaultDisplayTags('tools', recipes, searchResults);
     } else {
-        // If search input is empty, display filtered gallery based on tags
+        // Search input is empty. If there are tags selected, filteredRecipes is already updated.
         displayRecipes(filteredRecipes);
         defaultDisplayTags('ingredients', recipes, filteredRecipes);
         defaultDisplayTags('appliance', recipes, filteredRecipes);
         defaultDisplayTags('tools', recipes, filteredRecipes);
     }
 }
-
 
 //Tag menu animations with event listeners and DOM manipulation to display or hide menus and tags
 addMenuClickListener('menu-ingredients', recipes);

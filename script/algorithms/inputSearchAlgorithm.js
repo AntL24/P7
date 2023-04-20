@@ -1,9 +1,10 @@
 import {tagSearchAlgorithm} from './tagSearchAlgorithm.js';
 
+//Search algorithm for recipes: linear search with for loops
 function searchAlgorithm(query, recipes, tags) {
   let searchResults = [];
 
-  // Si un texte est saisi dans le champ de recherche, recherchez dans le nom et la description de la recette
+  //If query, search for recipes with matching name, description, or ingredients
   if (query.length > 0) {
     const queryLowerCase = query.toLowerCase();
     for (let i = 0; i < recipes.length; i++) {
@@ -33,9 +34,8 @@ function searchAlgorithm(query, recipes, tags) {
     searchResults = [...recipes];
   }
 
-  // Si des tags sont présents, utilisez l'algorithme de recherche approprié
+  // If tags are selected, filter the recipes based on those tags
   if (tags.length > 0) {
-    console.log("searching with tags")
     searchResults = tagSearchAlgorithm(searchResults, tags);
   }
 

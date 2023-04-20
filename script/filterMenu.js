@@ -7,7 +7,6 @@ function toggleMenu(menuItem) {
     const searchResults = menuItem.querySelector('.search-results');
     const iconElement = menuItem.querySelector('i');
     const buttonElement = menuItem.querySelector('button');
-    // const noResults = searchResults.querySelector('.choose-keyword');
 
     if (iconElement.classList.contains('fa-chevron-down')) {
         searchResults.style.display = 'grid';
@@ -42,8 +41,7 @@ function addMenuClickListener(menuId, recipes) {
         } else {
             //Open the menu
             toggleMenu(menuElement);
-            // //Display all tags corresponding to the opened menu
-            // defaultDisplayTags(menuId.split("-")[1], recipes);
+            
         }
     });
 
@@ -58,6 +56,7 @@ function addMenuClickListener(menuId, recipes) {
     });
 }
 
+//Display tags according to the actions of the user (except for input in menu).
 function defaultDisplayTags(category, recipes, displayedRecipes = null) {
     const searchResultsElement = document.querySelector(`#menu-${category} .search-results`);
 
@@ -104,6 +103,7 @@ function defaultDisplayTags(category, recipes, displayedRecipes = null) {
     });
 }
 
+//Update all tag menus at once
 function updateAllCategories(recipes, displayedRecipes = null) {
     const categories = ['ingredients', 'appliance', 'tools'];
 

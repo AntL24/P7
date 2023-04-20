@@ -1,6 +1,7 @@
 import { searchAlgorithm } from "./algorithms/inputSearchAlgorithm.js";
 import { defaultDisplayTags } from "./filterMenu.js";
 import { updateAllCategories } from "./filterMenu.js";
+
 //Recipe card constructor 
 function createRecipeCard(recipe) {
     const recipeCard = document.createElement("div");
@@ -9,7 +10,6 @@ function createRecipeCard(recipe) {
     const recipeCardImage = document.createElement("div");
     recipeCardImage.classList.add("recipe-card-image");
     const img = document.createElement("img");
-    // img.src = `../Limonada-de-Coco-(2).jpg;
     img.src = `../Limonada-de-Coco-(2).jpg`;
     recipeCardImage.appendChild(img);
 
@@ -71,11 +71,10 @@ function createRecipeCard(recipe) {
     recipeCard.appendChild(recipeCardImage);
     recipeCard.appendChild(recipeCardContent);
   
-    //returns the recipe card to be added to the DOM
     return recipeCard;
 }
 
-//Display gallery of recipes
+//Display gallery
 function displayRecipes(recipes) {
     const recipesGrid = document.querySelector(".recipes-grid");
     recipesGrid.innerHTML = "";
@@ -85,9 +84,8 @@ function displayRecipes(recipes) {
     });
 }
 
-//Refresh gallery of recipes
+//Refresh gallery
 function refreshGallery(recipes) {
-  console.log("Refreshing gallery");
 
   //Get all tags displayed in the html page
   const searchInput = document.getElementById("searchInput");
@@ -103,7 +101,7 @@ function refreshGallery(recipes) {
   });
       //Call search function and assign results to variable
       const searchResults = searchAlgorithm(searchInput.value, recipes, tags);
-      // console.log("Refreshing, Search results: " + JSON.stringify(searchResults, null, 2));
+
       //If no results are found, display message
       if (searchResults.length === 0) {
           //Create no results message
@@ -117,7 +115,7 @@ function refreshGallery(recipes) {
           recipesGrid.appendChild(noResults);
           return;
       }
-      //Display search results
+      //Update gallery and tag menus with search results.
       displayRecipes(searchResults);
       updateAllCategories(recipes, searchResults);
 }
@@ -134,17 +132,14 @@ function refreshGallery(recipes) {
     //Remove tag from selected tags list when clicking on the icon "far fa-times-circle"
     tagIcon.addEventListener("click", (event) => {
       event.target.parentElement.remove();
-      //Update tag search results when removing a tag (click on icon)
-      // updateTagSearchResults(category, event.target.parentElement.querySelector(".tag-text").textContent, recipes);
-      // defaultDisplayTags(category, recipes, recipes);
       //Update gallery when removing a tag (click on icon)
       refreshGallery(recipes);
     });
   
     //If tag already exists in selected tags list, don't add it again
     if (selectedTags.innerHTML.includes(event.target.textContent)) {
-      console.log("Tag already exists")
       return;
+
     //Tag is new, pin it.
     } else {
       tagElement.classList.add(`${category}-tag`, "tag");
@@ -160,14 +155,9 @@ function refreshGallery(recipes) {
     }
     //Refresh gallery when adding a tag (click on tag)
     refreshGallery(recipes);
-    console.log("Tag added", category, event.target.textContent);
-    //Update tag search results when adding a tag (click on tag)
-    // updateTagSearchResults(category, event.target.textContent, recipes);
-    // defaultDisplayTags(category, recipes, recipes);
-    
   }
 
-//Display tags results in category menu search
+//Update tags on menu input change
 function updateTagSearchResults(category, searchTerm, recipes, filteredRecipes) {
   const searchResultsElement = document.getElementById(`search-results-${category}`);
   searchResultsElement.innerHTML = ""; // Clear previous search results
@@ -182,6 +172,7 @@ function updateTagSearchResults(category, searchTerm, recipes, filteredRecipes) 
     }
 }
 
+//Use input to filter tags (accessory function)
 function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
 
     const searchResultsElement = document.getElementById(`search-results-${category}`);
@@ -199,8 +190,6 @@ function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
     }
 
     //If searchTerm exist, filter tags to remove duplicates and to only keep tags that include the search term,
-    //and to only keep tags that are present in the filtered recipes
-
     if (searchTerm) {
       filteredTags = Array.from(new Set(filteredTags.filter(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))));
       //Only keep tags that are present in the filtered recipes
@@ -217,7 +206,6 @@ function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
       }));
     
     } else {
-      console.log("No search term")
       filteredTags = Array.from(new Set(filteredTags));
     }
 

@@ -1,3 +1,4 @@
+//Linear search algorithm for tags
 function tagSearchAlgorithm(recipes, tags) {
   let filteredRecipes = [];
 
