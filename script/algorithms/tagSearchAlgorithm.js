@@ -1,43 +1,29 @@
-//Linear search algorithm for tags
+//Alternative search algorithm for tags
 function tagSearchAlgorithm(recipes, tags) {
-  let filteredRecipes = [];
+  console.log("Tags in search algorithm: " + JSON.stringify(tags, null, 2));
 
-  outerLoop: for (let recipe of recipes) {
-    for (let tag of tags) {
+  recipes = recipes.filter(recipe => {
+    return tags.every(tag => {
+      console.log("Tag in search algorithm: " + JSON.stringify(tag, null, 2));
       const tagCategory = tag.category;
       const tagText = tag.name.toLowerCase();
 
-      let tagMatched = false;
-
       if (tagCategory === "ingredients") {
-        for (let ingredient of recipe.ingredients) {
-          if (ingredient.ingredient.toLowerCase().includes(tagText)) {
-            tagMatched = true;
-            break;
-          }
-        }
+        return recipe.ingredients.some(ingredient =>
+          ingredient.ingredient.toLowerCase().includes(tagText)
+        );
       } else if (tagCategory === "appliance") {
-        if (recipe.appliance.toLowerCase().includes(tagText)) {
-          tagMatched = true;
-        }
+        return recipe.appliance.toLowerCase().includes(tagText);
       } else if (tagCategory === "tools") {
-        for (let ustensil of recipe.ustensils) {
-          if (ustensil.toLowerCase().includes(tagText)) {
-            tagMatched = true;
-            break;
-          }
-        }
+        return recipe.ustensils.some(ustensil =>
+          ustensil.toLowerCase().includes(tagText)
+        );
       }
+      return false;
+    });
+  });
 
-      if (!tagMatched) {
-        continue outerLoop;
-      }
-    }
-
-    filteredRecipes.push(recipe);
-  }
-
-  return filteredRecipes;
+  return recipes;
 }
 
 export { tagSearchAlgorithm };
