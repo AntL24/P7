@@ -1,4 +1,5 @@
 import {handleTagClick} from './DOMelements.js';
+import { searchAlgorithm } from './algorithms/inputSearchAlgorithm.js';
 
 //Show menu when clicking on the menu icon
 function toggleMenu(menuItem) {
@@ -57,82 +58,51 @@ function addMenuClickListener(menuId, recipes) {
     });
 }
 
-//Show all tags corresponding to the opened menu
 function defaultDisplayTags(category, recipes, displayedRecipes = null) {
-  const searchResultsElement = document.querySelector(`#menu-${category} .search-results`);
+    const searchResultsElement = document.querySelector(`#menu-${category} .search-results`);
 
-///////////////////////////////////////////////////////////////////////
-let filteredTags = new Set();
+    const tagElements = document.querySelectorAll(".tag");
+    const tags = [];
 
-  // Utilisez displayedRecipes s'il est défini, sinon utilisez toutes les recettes
-  const recipesToFilter = displayedRecipes ? displayedRecipes : recipes;
-  recipesToFilter.forEach(recipe => {
-    if (category === 'ingredients') {
-      recipe[category].forEach(tag => {
-        filteredTags.add(tag.ingredient.toLowerCase());
-      });
-    } 
-    else if (category === 'appliance') {
-        const appliance = recipe.appliance;
-        filteredTags.add(appliance.toLowerCase());
+    tagElements.forEach(tag => {
+        const tagData = {
+            category: tag.classList[0].split("-")[0],
+            name: tag.querySelector(".tag-text").textContent
+        };
+        tags.push(tagData);
+    });
 
+    let filteredTags = new Set();
 
-    }
-    else if (category === 'tools') {
-        const tools = recipe.ustensils;
-        tools.forEach(tool => {
-            filteredTags.add(tool.toLowerCase());
-        });
-    }
-});
+    const recipesToFilter = displayedRecipes ? displayedRecipes : recipes;
+    const filteredRecipes = searchAlgorithm("", recipesToFilter, tags);
 
-  searchResultsElement.innerHTML = "";
+    filteredRecipes.forEach(recipe => {
+        if (category === 'ingredients') {
+            recipe[category].forEach(tag => {
+                filteredTags.add(tag.ingredient.toLowerCase());
+            });
+        } else if (category === 'appliance') {
+            const appliance = recipe.appliance;
+            filteredTags.add(appliance.toLowerCase());
+        } else if (category === 'tools') {
+            const tools = recipe.ustensils;
+            tools.forEach(tool => {
+                filteredTags.add(tool.toLowerCase());
+            });
+        }
+    });
 
-  filteredTags.forEach(tag => {
-    const tagElement = document.createElement("span");
-    tagElement.textContent = tag;
-    tagElement.classList.add("tag-container");
-    searchResultsElement.appendChild(tagElement);
-    tagElement.addEventListener("click", (event) => handleTagClick(event, category, recipes));
-  });
+    searchResultsElement.innerHTML = "";
+
+    filteredTags.forEach(tag => {
+        const tagElement = document.createElement("span");
+        tagElement.textContent = tag;
+        tagElement.classList.add("tag-container");
+        searchResultsElement.appendChild(tagElement);
+        tagElement.addEventListener("click", (event) => handleTagClick(event, category, recipes));
+    });
 }
 
-
-
-
-  //By default, display all tags corresponding to the category
-//   if (category === "ingredients"){
-//     const ingredients = recipes.flatMap(recipe => recipe.ingredients.map(ingredient => ingredient.ingredient));
-//     const uniqueIngredients = Array.from(new Set(ingredients));
-//     uniqueIngredients.forEach(tag => {
-        
-//         const tagElement = document.createElement("span");
-//         tagElement.textContent = tag;
-//         tagElement.classList.add("tag-container");
-//         searchResultsElement.appendChild(tagElement);
-//         tagElement.addEventListener("click", (event) => handleTagClick(event, category, recipes));
-//     });
-//   } else if (category === "appliance") {
-//     const appliances = recipes.map(recipe => recipe.appliance);
-//     const uniqueAppliances = Array.from(new Set(appliances));
-//     uniqueAppliances.forEach(tag => {
-//         const tagElement = document.createElement("span");
-//         tagElement.textContent = tag;
-//         tagElement.classList.add("tag-container");
-//         searchResultsElement.appendChild(tagElement);
-//         tagElement.addEventListener("click", (event) => handleTagClick(event, category, recipes));
-//     });
-//   } else if (category === "tools") {
-//     const tools = recipes.flatMap(recipe => recipe.ustensils);
-//     const uniqueTools = Array.from(new Set(tools));
-//     uniqueTools.forEach(tag => {
-//         const tagElement = document.createElement("span");
-//         tagElement.textContent = tag;
-//         tagElement.classList.add("tag-container");
-//         searchResultsElement.appendChild(tagElement);
-//         tagElement.addEventListener("click", (event) => handleTagClick(event, category, recipes));
-//     });
-//   }
-// }
 
 export {addMenuClickListener, defaultDisplayTags};
