@@ -163,6 +163,10 @@ function updateTagSearchResults(category, searchTerm, recipes, filteredRecipes) 
   searchResultsElement.innerHTML = ""; // Clear previous search results
   searchResultsElement.style.display = "grid";
   searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
+  //If filtered recipes is empty, display all recipes
+  if (filteredRecipes.length === 0) {
+    filteredRecipes = recipes;
+  }
   //Minimum requirement to search 3 characters is met
   if (searchTerm.length >= 3) {
     tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes);
