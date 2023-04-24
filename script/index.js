@@ -76,22 +76,27 @@ addMenuClickListener('menu-ingredients', recipes);
 addMenuClickListener('menu-appliance', recipes);
 addMenuClickListener('menu-tools', recipes);
 
+
 //Update tag lists when input is entered
 document.getElementById("input-ingredients-input").addEventListener("input", (event) => {
     const tags = getTags();
-    const filteredRecipes = searchAlgorithm("", recipes, tags);
+    //Get search input value
+    const searchInput = document.getElementById("searchInput");
+    const filteredRecipes = searchAlgorithm(searchInput.value, recipes, tags);
     updateTagSearchResults("ingredients", event.target.value, recipes, filteredRecipes);
   });
   
   document.getElementById("input-appliance-input").addEventListener("input", (event) => {
     const tags = getTags();
-    const filteredRecipes = searchAlgorithm("", recipes, tags);
+    const searchInput = document.getElementById("searchInput");
+    const filteredRecipes = searchAlgorithm(searchInput.value, recipes, tags);
     updateTagSearchResults("appliance", event.target.value, recipes, filteredRecipes);
   });
   
   document.getElementById("input-tools-input").addEventListener("input", (event) => {
     const tags = getTags();
-    const filteredRecipes = searchAlgorithm("", recipes, tags);
+    const searchInput = document.getElementById("searchInput");
+    const filteredRecipes = searchAlgorithm(searchInput.value, recipes, tags);
     updateTagSearchResults("tools", event.target.value, recipes, filteredRecipes);
   });
   
