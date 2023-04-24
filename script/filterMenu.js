@@ -56,7 +56,7 @@ function addMenuClickListener(menuId, recipes) {
     });
 }
 
-//Display tags according to the actions of the user (except for input in menu).
+//Display tags according to the actions of the user (except for input in menu, which is handled in updateTagSearchResults)
 function defaultDisplayTags(category, recipes, displayedRecipes = null) {
     const searchResultsElement = document.querySelector(`#menu-${category} .search-results`);
 
@@ -73,6 +73,8 @@ function defaultDisplayTags(category, recipes, displayedRecipes = null) {
 
     let filteredTags = new Set();
 
+    //If displayedRecipes is null, it means that the user has not filtered the recipes yet. We sort the whole list of recipes.
+    //Else, we need to filter the displayed recipes instead of the whole list of recipes.
     const recipesToFilter = displayedRecipes ? displayedRecipes : recipes;
     const filteredRecipes = searchAlgorithm("", recipesToFilter, tags);
 

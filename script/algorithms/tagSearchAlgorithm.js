@@ -1,10 +1,8 @@
 //Alternative search algorithm for tags
 function tagSearchAlgorithm(recipes, tags) {
-  console.log("Tags in search algorithm: " + JSON.stringify(tags, null, 2));
 
   recipes = recipes.filter(recipe => {
     return tags.every(tag => {
-      console.log("Tag in search algorithm: " + JSON.stringify(tag, null, 2));
       const tagCategory = tag.category;
       const tagText = tag.name.toLowerCase();
 
