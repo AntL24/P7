@@ -106,7 +106,7 @@ function refreshGallery(recipes) {
       if (searchResults.length === 0) {
           //Create no results message
           const noResults = document.createElement("p");
-          noResults.textContent = "No results found";
+          noResults.textContent = "Aucune recette ne correspond à vos critères.";
           noResults.classList.add("no-results");
           noResults.id = "no-results";
           //Append message to DOM
@@ -165,14 +165,13 @@ function updateTagSearchResults(category, searchTerm, recipes, filteredRecipes) 
   searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
   //Minimum requirement to search 3 characters is met
   if (searchTerm.length >= 3) {
-    
-  tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes);
+    tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes);
     } else {
       defaultDisplayTags(category, recipes, filteredRecipes);
     }
 }
 
-//Use input to filter tags (accessory function)
+//Use input to filter tags and display them
 function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
 
     const searchResultsElement = document.getElementById(`search-results-${category}`);
@@ -180,7 +179,7 @@ function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
     // Initialize variable to store filtered tags
     let filteredTags;
 
-    // Get tags based on category search (ingredients, appliance, tools)
+    // Get tags based on search category (ingredients, appliance, tools) and store them in filteredTags
     if (category === "ingredients") {
       filteredTags = filteredRecipes.flatMap(recipe => recipe.ingredients.map(ingredient => ingredient.ingredient));
     } else if (category === "appliance") {
@@ -189,26 +188,12 @@ function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
       filteredTags = filteredRecipes.flatMap(recipe => recipe.ustensils);
     }
 
-    //If searchTerm exist, filter tags to remove duplicates and to only keep tags that include the search term,
     if (searchTerm) {
+      //Filter tags according to tag search input
       filteredTags = Array.from(new Set(filteredTags.filter(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))));
-      //Only keep tags that are present in the filtered recipes
-      filteredTags = filteredTags.filter(tag => filteredRecipes.some(recipe => {
-        if (category === "ingredients") {
-          return recipe.ingredients.some(ingredient => ingredient.ingredient === tag);
-        }
-        if (category === "appliance") {
-          return recipe.appliance === tag;
-        }
-        if (category === "tools") {
-          return recipe.ustensils.includes(tag);
-        }
-      }));
-    
-    } else {
-      filteredTags = Array.from(new Set(filteredTags));
-    }
-
+      //remove duplicates from filtered tags, using Set object on array of tags toLowerCase
+      filteredTags = Array.from(new Set(filteredTags.map(tag => tag.toLowerCase())));
+    } 
     // Manipulate DOM to display tags according to category input search
     filteredTags.forEach(tag => {
       const tagElement = document.createElement("span");
