@@ -11,6 +11,7 @@ function createRecipeCard(recipe) {
     recipeCardImage.classList.add("recipe-card-image");
     const img = document.createElement("img");
     img.src = `../Limonada-de-Coco-(2).jpg`;
+    img.alt = recipe.name;
     recipeCardImage.appendChild(img);
 
   
