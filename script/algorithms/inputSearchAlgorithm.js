@@ -1,28 +1,22 @@
 import { tagSearchAlgorithm } from "./tagSearchAlgorithm.js";
 
 function searchAlgorithm(query, recipes, tags) {
-  let searchResults = [];
   
-  //Query, return recipes that match the query
-  if (query.length > 0) {
-    const queryLowerCase = query.toLowerCase();
+let searchResults = [];
+const regex = new RegExp(query, "i");//case insensitive regex is far quicker than toLowerCase()
 
-    searchResults = recipes.filter((recipe) => {
-      const recipeName = recipe.name.toLowerCase();
-      const recipeDescription = recipe.description.toLowerCase();
-
-      if (
-        recipeName.includes(queryLowerCase) ||
-        recipeDescription.includes(queryLowerCase)
-      ) {
-        return true;
+if (query.length >= 3) {
+  recipes.forEach(recipe => {
+    if (regex.test(recipe.name) || regex.test(recipe.description)) {
+      searchResults.push(recipe);
+    } else {
+      const found = recipe.ingredients.some(ingredient => regex.test(ingredient.ingredient));
+      if (found) {
+        searchResults.push(recipe);
       }
-
-      return recipe.ingredients.some((ingredient) =>
-        ingredient.ingredient.toLowerCase().includes(queryLowerCase)
-      );
-    });
-  } else {
+    }
+  });
+} else {
     //No query, return all recipes for tag search
     searchResults = [...recipes];
   }
