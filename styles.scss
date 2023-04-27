@@ -366,3 +366,23 @@ main {
   display: inline-block;
   cursor: pointer;
 }
+
+
+// @media screen and (max-width: 768px) {
+//   .recipes-grid {
+//     grid-template-columns: repeat(1, 1fr);
+//   }
+//   .ingredients-and-instructions {
+//     flex-direction: column;
+//     .recipe-ingredients {
+//       max-width: 100%;
+//       -webkit-column-width: 100%;
+//       column-width: 100%;
+//     }
+//     .instructions {
+//       max-width: 100%;
+//       -webkit-column-width: 100%;
+//       column-width: 100%;
+//     }
+//   }
+// }

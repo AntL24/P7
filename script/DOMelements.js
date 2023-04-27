@@ -1,5 +1,4 @@
 import { searchAlgorithm } from "./algorithms/inputSearchAlgorithm.js";
-import { defaultDisplayTags } from "./filterMenu.js";
 import { updateAllCategories } from "./filterMenu.js";
 
 //Recipe card constructor 
@@ -121,103 +120,6 @@ function refreshGallery(recipes) {
       updateAllCategories(recipes, searchResults);
 }
 
-  // Function to pin tag element and handle click event on tags search elements (close when icon is selected)
-  function handleTagClick(event, category, recipes) {
-    const selectedTags = document.querySelector(".selected-tags");
-    const tagElement = document.createElement("div");
-    const tagText = document.createElement("span");
-    const tagIcon = document.createElement("i");
 
 
-    //Remove tag from selected tags list when clicking on the icon "far fa-times-circle"
-    tagIcon.addEventListener("click", (event) => {
-      event.target.parentElement.remove();
-      //Update gallery when removing a tag (click on icon)
-      refreshGallery(recipes);
-    });
-  
-    //If tag already exists in selected tags list, don't add it again
-    if (selectedTags.innerHTML.includes(event.target.textContent)) {
-      return;
-
-    //Tag is new, pin it.
-    } else {
-      tagElement.classList.add(`${category}-tag`, "tag");
-      tagText.classList.add("tag-text");
-      tagIcon.classList.add("far", "fa-times-circle");
-      tagIcon.setAttribute("aria-hidden", "true");
-    
-      tagText.textContent = event.target.textContent;
-    
-      tagElement.appendChild(tagText);
-      tagElement.appendChild(tagIcon);
-      selectedTags.appendChild(tagElement);
-    }
-    //Refresh gallery when adding a tag (click on tag)
-    refreshGallery(recipes);
-  }
-
-
-//Update tags on menu input change
-function updateTagSearchResults(category, searchTerm, recipes, filteredRecipes) {
-  const searchResultsElement = document.getElementById(`search-results-${category}`);
-  searchResultsElement.innerHTML = ""; // Clear previous search results
-  searchResultsElement.style.display = "grid";
-  searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
-  //If filtered recipes is empty, display all recipes
-  if (filteredRecipes.length === 0) {
-    filteredRecipes = recipes;
-  }
-  //Minimum requirement to search 3 characters is met
-  if (searchTerm.length >= 3) {
-    tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes);
-    } else {
-      defaultDisplayTags(category, recipes, filteredRecipes);
-    }
-}
-
-//Use input to filter tags and display them
-function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
-
-    const searchResultsElement = document.getElementById(`search-results-${category}`);
-
-    // Initialize variable to store filtered tags
-    let filteredTags;
-
-    // Get tags based on search category (ingredients, appliance, tools) and store them in filteredTags
-    if (category === "ingredients") {
-      filteredTags = filteredRecipes.flatMap(recipe => recipe.ingredients.map(ingredient => ingredient.ingredient));
-    } else if (category === "appliance") {
-      filteredTags = filteredRecipes.map(recipe => recipe.appliance);
-    } else if (category === "tools") {
-      filteredTags = filteredRecipes.flatMap(recipe => recipe.ustensils);
-    }
-
-    if (searchTerm) {
-      //Filter tags according to tag search input
-      filteredTags = Array.from(new Set(filteredTags.filter(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))));
-      //remove duplicates from filtered tags, using Set object on array of tags toLowerCase
-      filteredTags = Array.from(new Set(filteredTags.map(tag => tag.toLowerCase())));
-    } 
-    // Manipulate DOM to display tags according to category input search
-    filteredTags.forEach(tag => {
-      const tagElement = document.createElement("span");
-      tagElement.textContent = tag;
-      tagElement.classList.add("tag-container");
-      searchResultsElement.appendChild(tagElement);
-      tagElement.addEventListener("click", (event) => handleTagClick(event, category, recipes));
-    });
-
-    // Add style for category tag search results : 3 tags per row
-    searchResultsElement.style.display = "grid";
-    searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
-
-    // If no tags match the category search input, display a message
-    if (filteredTags.length === 0) {
-      searchResultsElement.style.gridTemplateColumns = "1fr";
-      searchResultsElement.innerHTML = '<p class="no-match"><i>Aucun résultat ne correspond à votre recherche</i></p>';
-  }
-}
-
-
-export {displayRecipes, updateTagSearchResults, handleTagClick, refreshGallery};
+export {displayRecipes, refreshGallery};

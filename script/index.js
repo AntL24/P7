@@ -1,7 +1,7 @@
-import { displayRecipes, updateTagSearchResults } from './DOMelements.js';
+import { displayRecipes } from './DOMelements.js';
 import { recipes } from "../recipes.js";
 import { searchAlgorithm } from "./algorithms/inputSearchAlgorithm.js";
-import { addMenuClickListener, defaultDisplayTags } from './filterMenu.js';
+import { addMenuClickListener, defaultDisplayTags, updateTagSearchResults } from './filterMenu.js';
 
 //Default gallery
 displayRecipes(recipes);
