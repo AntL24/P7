@@ -31,7 +31,7 @@ function toggleMenu(menuItem) {
 }
 
 //Place input listeners to make menu elements interactive
-function addMenuClickListener(menuId, recipes) {
+function addMenuClickListener(menuId) {
   const menuElement = document.getElementById(menuId);
   const iconElement = menuElement.querySelector("i");
 

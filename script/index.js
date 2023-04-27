@@ -34,18 +34,11 @@ function getTags () {
 
 //Main search function: filters recipes based on input and tags. Updates gallery and tag menus.
 function handleSearchInput(input) {
-
     const tags = getTags();
     let filteredRecipes = recipes;
-
-    // If there are tags selected, filter the recipes based on those tags
-    if (tags.length > 0) {
-        filteredRecipes = searchAlgorithm("", filteredRecipes, tags);
-    }
-    // If input, filter the recipes based on the input with Algorithm
-    if (input.target.value.length >= 3) {
-        const searchResults = searchAlgorithm(input.target.value, filteredRecipes, tags);
-        // No result error message
+    //Use algorithms to filter recipes based on input and tags (if there any or not will be handled by the algorithm)
+    const searchResults = searchAlgorithm(input.target.value, filteredRecipes, tags);
+    // No result error message
         if (searchResults.length === 0) {
             const noResults = document.createElement("p");
             noResults.textContent = "Aucune recette ne correspond à vos critères.";
@@ -57,45 +50,39 @@ function handleSearchInput(input) {
             recipesGrid.appendChild(noResults);
             return;
         }
-        // Update gallery and tag menus
-        displayRecipes(searchResults);
-        defaultDisplayTags('ingredients', recipes, searchResults);
-        defaultDisplayTags('appliance', recipes, searchResults);
-        defaultDisplayTags('tools', recipes, searchResults);
-    } else {
-        // Search input is empty. If there are tags selected, filteredRecipes is already updated.
-        displayRecipes(filteredRecipes);
-        defaultDisplayTags('ingredients', recipes, filteredRecipes);
-        defaultDisplayTags('appliance', recipes, filteredRecipes);
-        defaultDisplayTags('tools', recipes, filteredRecipes);
-    }
+    
+    // Update gallery and tag menus
+    displayRecipes(searchResults);
+    defaultDisplayTags('ingredients', recipes, searchResults);
+    defaultDisplayTags('appliance', recipes, searchResults);
+    defaultDisplayTags('tools', recipes, searchResults);
 }
 
-//Tag menu animations with event listeners and DOM manipulation to display or hide menus and tags
-addMenuClickListener('menu-ingredients', recipes);
-addMenuClickListener('menu-appliance', recipes);
-addMenuClickListener('menu-tools', recipes);
+//Tag menus: hide or show based on click
+addMenuClickListener('menu-ingredients');
+addMenuClickListener('menu-appliance');
+addMenuClickListener('menu-tools');
 
-//Update tag lists when input is entered
+//Update tag menus on input
 document.getElementById("input-ingredients-input").addEventListener("input", (event) => {
     const tags = getTags();
     //Get search input value
     const searchInput = document.getElementById("searchInput");
     const filteredRecipes = searchAlgorithm(searchInput.value, recipes, tags);
     updateTagSearchResults("ingredients", event.target.value, recipes, filteredRecipes);
-  });
+});
   
-  document.getElementById("input-appliance-input").addEventListener("input", (event) => {
+document.getElementById("input-appliance-input").addEventListener("input", (event) => {
     const tags = getTags();
     const searchInput = document.getElementById("searchInput");
     const filteredRecipes = searchAlgorithm(searchInput.value, recipes, tags);
     updateTagSearchResults("appliance", event.target.value, recipes, filteredRecipes);
-  });
+});
   
-  document.getElementById("input-tools-input").addEventListener("input", (event) => {
+document.getElementById("input-tools-input").addEventListener("input", (event) => {
     const tags = getTags();
     const searchInput = document.getElementById("searchInput");
     const filteredRecipes = searchAlgorithm(searchInput.value, recipes, tags);
     updateTagSearchResults("tools", event.target.value, recipes, filteredRecipes);
-  });
+});
   
