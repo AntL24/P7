@@ -63,14 +63,30 @@ function updateAllCategories(recipes, displayedRecipes = null) {
   });
 }
 
-//Pin tag element and handle click event on tags search elements (close when icon is selected)
+
+//Get all tags from the DOM
+function getTags () {
+  const tagElements = document.querySelectorAll(".tag");
+  const tags = [];
+
+  tagElements.forEach(tag => {
+      const tagData = {
+          category: tag.classList[0].split("-")[0],
+          name: tag.querySelector(".tag-text").textContent
+      };
+      tags.push(tagData);
+  });
+  return tags;
+}
+
+//Pin tag element and handle click events on tag suggestion elements
 function handleTagClick(event, category, recipes) {
   const selectedTags = document.querySelector(".selected-tags");
   const tagElement = document.createElement("div");
   const tagText = document.createElement("span");
   const tagIcon = document.createElement("i");
 
-  //Remove tag from selected tags list when clicking on the icon "far fa-times-circle"
+  //Remove tag from selected tags list when clicking on the icon
   tagIcon.addEventListener("click", (event) => {
     event.target.parentElement.remove();
     //Update gallery when removing a tag (click on icon)
@@ -83,6 +99,12 @@ function handleTagClick(event, category, recipes) {
 
   //Tag is new, pin it.
   } else {
+    //empty the input field
+    const inputElement = document.querySelector(
+      `#menu-${category} input[type="text"]`
+    );
+    inputElement.value = "";
+
     tagElement.classList.add(`${category}-tag`, "tag");
     tagText.classList.add("tag-text");
     tagIcon.classList.add("far", "fa-times-circle");
@@ -105,23 +127,13 @@ function defaultDisplayTags(category, recipes, displayedRecipes = null) {
     `#menu-${category} .search-results`
   );
 
-  const tagElements = document.querySelectorAll(".tag");
-  const tags = [];
-
-  tagElements.forEach((tag) => {
-    const tagData = {
-      category: tag.classList[0].split("-")[0],
-      name: tag.querySelector(".tag-text").textContent,
-    };
-    tags.push(tagData);
-  });
-
+  const tags = getTags();
   let filteredTags = new Set();
 
-  //If displayedRecipes is null, it means that the user has not filtered the recipes yet. We sort the whole list of recipes.
-  //Else, we need to filter the displayed recipes instead of the whole list of recipes.
+  //If displayedRecipes = null, user has not filtered the recipes => use all recipes to display all tags.
+  //If displayedRecipes, use them to display the tags.
   const recipesToFilter = displayedRecipes ? displayedRecipes : recipes;
-  //No need for input as recipesToFilter is already filtered when displayedRecipes is not null
+  //No input as recipesToFilter is already filtered when displayedRecipes is not null.
   const filteredRecipes = searchAlgorithm("", recipesToFilter, tags);
 
   filteredRecipes.forEach((recipe) => {
@@ -141,6 +153,14 @@ function defaultDisplayTags(category, recipes, displayedRecipes = null) {
   });
 
   searchResultsElement.innerHTML = "";
+  searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
+
+  //Use tag search by input if searchTerm is >= 3 characters
+  const searchTerm = document.querySelector(`#menu-${category} input`).value;
+  if (searchTerm.length >= 3) {
+    handleTagSearchInput(category, searchTerm, recipes, filteredRecipes);
+    return;
+  }
 
   filteredTags.forEach((tag) => {
     makeTagSuggestions(searchResultsElement, tag, category, recipes);
@@ -188,9 +208,9 @@ function tagsSearchByInput(category, searchTerm, recipes, filteredRecipes) {
   } else if (category === "tools") {
     filteredTags = filteredRecipes.flatMap((recipe) => recipe.ustensils);
   }
-
+  
   //Filter tags according to tag search input, Set and lowercase to avoid duplicates
-  if (searchTerm) {
+  if (searchTerm && searchTerm.length >= 3) {
     filteredTags = Array.from(
         new Set(
           filteredTags.filter((tag) =>
@@ -219,6 +239,7 @@ function tagsSearchByInput(category, searchTerm, recipes, filteredRecipes) {
 
 //Create the tag suggestions via DOM manipulation
 function makeTagSuggestions(parentElement, content, category, recipes) {
+  
     const tagElement = document.createElement("span");
     tagElement.textContent = content;
     tagElement.classList.add("tag-container");
@@ -229,4 +250,4 @@ function makeTagSuggestions(parentElement, content, category, recipes) {
 }
   
 
-export { addMenuClickListener, defaultDisplayTags, updateAllCategories, handleTagSearchInput, handleTagClick };
+export { addMenuClickListener, defaultDisplayTags, updateAllCategories, handleTagSearchInput, handleTagClick, getTags };
