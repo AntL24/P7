@@ -1,5 +1,5 @@
 import { searchAlgorithm } from "./algorithms/inputSearchAlgorithm.js";
-import { refreshGallery } from "./DOMelements.js";
+import { refreshGallery, makeTagSuggestions} from "./DOMelements.js";
 
 //Show menu when clicking on the icon
 function toggleMenu(menuItem) {
@@ -62,7 +62,6 @@ function updateAllCategories(recipes, displayedRecipes = null) {
     defaultDisplayTags(category, recipes, displayedRecipes);
   });
 }
-
 
 //Get all tags from the DOM
 function getTags () {
@@ -237,17 +236,6 @@ function tagsSearchByInput(category, searchTerm, recipes, filteredRecipes) {
   }
 }
 
-//Create the tag suggestions via DOM manipulation
-function makeTagSuggestions(parentElement, content, category, recipes) {
-  
-    const tagElement = document.createElement("span");
-    tagElement.textContent = content;
-    tagElement.classList.add("tag-container");
-    parentElement.appendChild(tagElement);
-    tagElement.addEventListener("click", (event) =>
-      handleTagClick(event, category, recipes)
-    );
-}
   
 
 export { addMenuClickListener, defaultDisplayTags, updateAllCategories, handleTagSearchInput, handleTagClick, getTags };

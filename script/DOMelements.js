@@ -1,5 +1,5 @@
 import { searchAlgorithm } from "./algorithms/inputSearchAlgorithm.js";
-import { updateAllCategories } from "./filterMenu.js";
+import { updateAllCategories, handleTagClick } from "./filterMenu.js";
 
 //Recipe card constructor 
 function createRecipeCard(recipe) {
@@ -119,5 +119,17 @@ function refreshGallery(recipes) {
 }
 
 
+//Create the tag suggestions via DOM manipulation
+function makeTagSuggestions(parentElement, content, category, recipes) {
+  
+  const tagElement = document.createElement("span");
+  tagElement.textContent = content;
+  tagElement.classList.add("tag-container");
+  parentElement.appendChild(tagElement);
+  tagElement.addEventListener("click", (event) =>
+    handleTagClick(event, category, recipes)
+  );
+}
 
-export { displayRecipes, refreshGallery };
+
+export { displayRecipes, refreshGallery, makeTagSuggestions };
