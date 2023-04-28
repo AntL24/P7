@@ -1,7 +1,7 @@
 import { searchAlgorithm } from "./algorithms/inputSearchAlgorithm.js";
 import { refreshGallery } from "./DOMelements.js";
 
-//Show menu when clicking on the menu icon
+//Show menu when clicking on the icon
 function toggleMenu(menuItem) {
   const inputElement = menuItem.querySelector('input[type="text"]');
   const searchResults = menuItem.querySelector(".search-results");
@@ -55,7 +55,15 @@ function addMenuClickListener(menuId) {
   });
 }
 
-// Function to pin tag element and handle click event on tags search elements (close when icon is selected)
+//Update all tag menus at once
+function updateAllCategories(recipes, displayedRecipes = null) {
+  const categories = ["ingredients", "appliance", "tools"];
+  categories.forEach((category) => {
+    defaultDisplayTags(category, recipes, displayedRecipes);
+  });
+}
+
+//Pin tag element and handle click event on tags search elements (close when icon is selected)
 function handleTagClick(event, category, recipes) {
   const selectedTags = document.querySelector(".selected-tags");
   const tagElement = document.createElement("div");
@@ -73,7 +81,7 @@ function handleTagClick(event, category, recipes) {
   if (selectedTags.innerHTML.includes(event.target.textContent)) {
     return;
 
-    //Tag is new, pin it.
+  //Tag is new, pin it.
   } else {
     tagElement.classList.add(`${category}-tag`, "tag");
     tagText.classList.add("tag-text");
@@ -90,7 +98,8 @@ function handleTagClick(event, category, recipes) {
   refreshGallery(recipes);
 }
 
-//Display tags according to the actions of the user (except for input in menu, which is handled in updateTagSearchResults)
+//Display tags in the menus according to the actions of the user
+//(except for input in menu, which is handled in updateTagSearchResults)
 function defaultDisplayTags(category, recipes, displayedRecipes = null) {
   const searchResultsElement = document.querySelector(
     `#menu-${category} .search-results`
@@ -112,6 +121,7 @@ function defaultDisplayTags(category, recipes, displayedRecipes = null) {
   //If displayedRecipes is null, it means that the user has not filtered the recipes yet. We sort the whole list of recipes.
   //Else, we need to filter the displayed recipes instead of the whole list of recipes.
   const recipesToFilter = displayedRecipes ? displayedRecipes : recipes;
+  //No need for input as recipesToFilter is already filtered when displayedRecipes is not null
   const filteredRecipes = searchAlgorithm("", recipesToFilter, tags);
 
   filteredRecipes.forEach((recipe) => {
@@ -133,47 +143,34 @@ function defaultDisplayTags(category, recipes, displayedRecipes = null) {
   searchResultsElement.innerHTML = "";
 
   filteredTags.forEach((tag) => {
-    const tagElement = document.createElement("span");
-    tagElement.textContent = tag;
-    tagElement.classList.add("tag-container");
-    searchResultsElement.appendChild(tagElement);
-    tagElement.addEventListener("click", (event) =>
-      handleTagClick(event, category, recipes)
-    );
-  });
-}
-
-//Update all tag menus at once
-function updateAllCategories(recipes, displayedRecipes = null) {
-  const categories = ["ingredients", "appliance", "tools"];
-
-  categories.forEach((category) => {
-    defaultDisplayTags(category, recipes, displayedRecipes);
+    makeTagSuggestions(searchResultsElement, tag, category, recipes);
   });
 }
 
 //Update tags on menu input change
-function updateTagSearchResults(category, searchTerm, recipes, filteredRecipes) {
+function handleTagSearchInput(category, searchTerm, recipes, filteredRecipes) {
   const searchResultsElement = document.getElementById(
     `search-results-${category}`
   );
-  searchResultsElement.innerHTML = ""; // Clear previous search results
-  searchResultsElement.style.display = "grid";
-  searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
-  //If filtered recipes is empty, display all recipes
+  //If filtered recipes is empty (meaning there's no match for main search bar input), display all recipes
   if (filteredRecipes.length === 0) {
     filteredRecipes = recipes;
   }
-  //Minimum requirement to search 3 characters is met
+  //Minimum requirement to search 3 characters is met, display resulting tags.
   if (searchTerm.length >= 3) {
-    tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes);
+    searchResultsElement.innerHTML = ""; // Clear previous search results
+    searchResultsElement.style.display = "grid";
+    searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
+    tagsSearchByInput(category, searchTerm, recipes, filteredRecipes);
   } else {
+    searchResultsElement.style.display = "grid";
+    searchResultsElement.style.gridTemplateColumns = "repeat(3, 1fr)";
+  //Keep displaying default tags until minimum requirement is met
     defaultDisplayTags(category, recipes, filteredRecipes);
   }
 }
-
 //Use input to filter tags and display them
-function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
+function tagsSearchByInput(category, searchTerm, recipes, filteredRecipes) {
   const searchResultsElement = document.getElementById(
     `search-results-${category}`
   );
@@ -192,8 +189,8 @@ function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
     filteredTags = filteredRecipes.flatMap((recipe) => recipe.ustensils);
   }
 
+  //Filter tags according to tag search input, Set and lowercase to avoid duplicates
   if (searchTerm) {
-    //Filter tags according to tag search input, Set and lowercase to avoid duplicates
     filteredTags = Array.from(
         new Set(
           filteredTags.filter((tag) =>
@@ -202,15 +199,10 @@ function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
         )
       );
   }
+  
   // Manipulate DOM to display tags according to category input search
   filteredTags.forEach((tag) => {
-    const tagElement = document.createElement("span");
-    tagElement.textContent = tag;
-    tagElement.classList.add("tag-container");
-    searchResultsElement.appendChild(tagElement);
-    tagElement.addEventListener("click", (event) =>
-      handleTagClick(event, category, recipes)
-    );
+    makeTagSuggestions(searchResultsElement, tag, category, recipes);
   });
 
   // Add style for category tag search results : 3 tags per row
@@ -225,4 +217,16 @@ function tagsSearchUpdate(category, searchTerm, recipes, filteredRecipes) {
   }
 }
 
-export { addMenuClickListener, defaultDisplayTags, updateAllCategories, updateTagSearchResults, handleTagClick };
+//Create the tag suggestions via DOM manipulation
+function makeTagSuggestions(parentElement, content, category, recipes) {
+    const tagElement = document.createElement("span");
+    tagElement.textContent = content;
+    tagElement.classList.add("tag-container");
+    parentElement.appendChild(tagElement);
+    tagElement.addEventListener("click", (event) =>
+      handleTagClick(event, category, recipes)
+    );
+}
+  
+
+export { addMenuClickListener, defaultDisplayTags, updateAllCategories, handleTagSearchInput, handleTagClick };

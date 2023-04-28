@@ -1,7 +1,7 @@
 import { displayRecipes } from './DOMelements.js';
 import { recipes } from "../recipes.js";
 import { searchAlgorithm } from "./algorithms/inputSearchAlgorithm.js";
-import { addMenuClickListener, defaultDisplayTags, updateTagSearchResults } from './filterMenu.js';
+import { addMenuClickListener, defaultDisplayTags, handleTagSearchInput } from './filterMenu.js';
 
 //Default gallery
 displayRecipes(recipes);
@@ -36,7 +36,7 @@ function getTags () {
 function handleSearchInput(input) {
     const tags = getTags();
     let filteredRecipes = recipes;
-    //Use algorithms to filter recipes based on input and tags (if there any or not will be handled by the algorithm)
+    //Use algorithms to filter recipes based on input and tags (the "if there are any or not" will be handled by the algorithm)
     const searchResults = searchAlgorithm(input.target.value, filteredRecipes, tags);
     // No result error message
         if (searchResults.length === 0) {
@@ -69,20 +69,18 @@ document.getElementById("input-ingredients-input").addEventListener("input", (ev
     //Get search input value
     const searchInput = document.getElementById("searchInput");
     const filteredRecipes = searchAlgorithm(searchInput.value, recipes, tags);
-    updateTagSearchResults("ingredients", event.target.value, recipes, filteredRecipes);
+    handleTagSearchInput("ingredients", event.target.value, recipes, filteredRecipes);
 });
-  
 document.getElementById("input-appliance-input").addEventListener("input", (event) => {
     const tags = getTags();
     const searchInput = document.getElementById("searchInput");
     const filteredRecipes = searchAlgorithm(searchInput.value, recipes, tags);
-    updateTagSearchResults("appliance", event.target.value, recipes, filteredRecipes);
+    handleTagSearchInput("appliance", event.target.value, recipes, filteredRecipes);
 });
-  
 document.getElementById("input-tools-input").addEventListener("input", (event) => {
     const tags = getTags();
     const searchInput = document.getElementById("searchInput");
     const filteredRecipes = searchAlgorithm(searchInput.value, recipes, tags);
-    updateTagSearchResults("tools", event.target.value, recipes, filteredRecipes);
+    handleTagSearchInput("tools", event.target.value, recipes, filteredRecipes);
 });
   
